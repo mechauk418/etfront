@@ -42,17 +42,13 @@ export default {
     //   )
   },
   methods:{
-    searchbtn() {
-      // console.log(this.search_key)
-      // axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.search_key + '/')
-      // .then(res => {
-      //     this.gamedetail = res.data.results
-      //     this.show = Array(this.gamedetail.length).fill(false)
-      //     console.log(this.show)
-      //     console.log(res.data.results)
-      //   }
-      // )
-      this.$router.push('search/'+this.search_key)
+    async searchbtn() {
+      await axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.search_key + '/')
+      .then(res => {
+        console.log(res)
+        this.$router.push('search/'+this.search_key)
+      }
+      )
     },
     toggle(index) {
       this.show.splice(index,1,!this.show[index])
