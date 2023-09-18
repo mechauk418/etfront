@@ -2,6 +2,7 @@
   <div>
     <input type="text" v-model="search_key">
     <button @click="searchbtn"> 검색 </button>
+    <div v-if="isLoading" class="loading" > <p> 로딩중입니다. </p> </div>
     <!-- <div v-for="(game,index) in gamedetail" :key="index" style="border: 1px solid black;">
       <p>{{ game.id }}</p>
       <p>{{ game.playcharacter }}</p>
@@ -28,6 +29,7 @@ export default {
       search_key:null,
       gamedetail: [],
       show : [],
+      isLoading:false
     }
 
   },
@@ -43,9 +45,11 @@ export default {
   },
   methods:{
     async searchbtn() {
+      this.isLoading = true
       await axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.search_key + '/')
       .then(res => {
         console.log(res)
+        this.isLoading = false
         this.$router.push('search/'+this.search_key)
       }
       )
@@ -59,5 +63,12 @@ export default {
 </script>
 
 <style>
+
+.loading {
+  height: 100vh;
+  width:100%;
+  background-color: rgb(108, 106, 106);
+  opacity: 0.5;
+}
 
 </style>
