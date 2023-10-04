@@ -1,6 +1,9 @@
 <template>
   <div class="backgrounddiv">
-    <div class="container">
+    <div v-if="isLoading" class="loading" > 
+        <img src="../assets/vic.gif" style="height: 100%;">
+    </div>
+    <div class="container" v-show="!isLoading">
       <!-- <input type="text" v-model="search_key">
       <button @click="searchbtn"> 검색 </button> -->
       <div class="banner">
@@ -62,7 +65,7 @@
         <!-- 전적 -->
         <div class="전적">
           <div style="display: flex; background-color: black; color: white; align-items: center; justify-content: start;">
-            <p style="width:5%">등수</p>
+            <p style="width:10%">등수</p>
             <p style="width:15%">캐릭터</p>
             <p style="width:10%">KDA</p>
             <p style="width:10%">딜량</p>
@@ -79,8 +82,9 @@
 
           <div v-for="(game,index) in gamedetail" :key="index" style="margin-top: 0.4rem; margin-bottom: 0.4rem; border: 0.5px solid rgb(175, 171, 171);">
             <div :class="`rankdiv${game.gamerank}`" >
-              <div style="width:5%; display: flex; align-items: center; justify-content: center; ">
-                <p>{{ game.gamerank }}</p>
+              <div style="width:10%; display: flex; justify-content: center; flex-direction: column;">
+                <p style="font-size: x-large; font-weight: 700; margin:0;">#{{ game.gamerank }}</p>
+                <p style="margin:0; margin-top:0.5rem;">{{ game.whenplay }}</p>
               </div>
               <div style="width:15%; display: flex; align-items: center; justify-content: center;">
                 <div class="ch_icon_div">
@@ -103,7 +107,7 @@
                 <p> {{ game.useWard }}</p>
               </div>
               <div style="width:10%; display: flex; align-items: center; justify-content: center;">
-                <p v-if="game.premaid>1">사전큐</p>
+                <p v-if="game.premaid>1">O</p>
                 <p v-if="game.premaid==1"></p>
               </div>
               <!-- 아이템 -->
@@ -131,7 +135,6 @@
                   </div>
                 </div>
               </div>
-
               <button v-if="game.gamerank==1" @click="toggle(index)" class="addbtn1"> ▼ </button>
               <button v-if="game.gamerank==2 || game.gamerank==3" @click="toggle(index)" class="addbtn2"> ▼ </button>
               <button v-if="game.gamerank>3" @click="toggle(index)" class="addbtn3"> ▼ </button>
@@ -146,7 +149,7 @@
                   <p style="flex:1">KDA</p>
                   <p style="flex:1">딜량</p>
                   <p style="flex:1">와드</p>
-                  <p style="flex:1">사전큐</p>
+                  <p style="flex:0.5">사전큐</p>
                   <p style="flex:2">아이템</p>
                 </div>
               </div>
@@ -159,7 +162,28 @@
                       <div class="detail_icon2_div">
                         <img class="detail_icon2" v-if="gs.gamerank == ttas" :src="require(`../assets/character/${gs.playcharacter}.png`)">
                       </div>
-                      <p v-if="gs.gamerank == ttas" style="flex:2; font-size: large;">{{gs.user}}</p>
+                      <div v-if="gs.gamerank == ttas" style="flex:2; font-size: large;">
+                        <div style="display: flex;">
+                          <div style="width:15%;">
+                          </div>
+                          <a style="font-weight: 700; text-align: start; margin-left:0.3rem; font-size: 0.8rem;" @click="userclickbtn(gs.user)">{{gs.user}}</a>
+                        </div>
+                        <div style="display: flex;">
+                          <div style="width: 15%; height: 10%;">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/1.png" v-if="gs.tier=='아이언'">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/2.png" v-if="gs.tier=='브론즈' ">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/3.png" v-if="gs.tier=='실버' ">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/4.png" v-if="gs.tier=='골드' ">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/5.png" v-if="gs.tier=='플래티넘' ">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/6.png" v-if="gs.tier=='다이아몬드'  ">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/66.png" v-if="gs.tier=='미스릴'">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/7.png" v-if="gs.tier=='데미갓'">
+                            <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/8.png" v-if="gs.tier=='이터니티'">
+                          </div>
+
+                          <p style="color:darkgray; font-weight: 600; margin:0; align-self: center; margin-left:0.3rem; font-size: 0.8rem;">{{ gs.tier }}{{ gs.grade }}            {{gs.RP  }}점</p>
+                        </div>
+                      </div>
                       <div v-if="gs.gamerank == ttas" style="flex:1;">
                         <span style="font-weight: 700;"> {{ gs.playerkill }}</span>
                         <span style="color:gray"> / </span>
@@ -171,8 +195,8 @@
                       <!-- <p v-if="gs.gamerank == ttas" style="flex:1; font-size: large;">{{gs.playerkill}}/{{ gs.playerAss }}/{{ gs.mosterkill }}</p> -->
                       <p v-if="gs.gamerank == ttas" style="flex:1; font-weight: 700;">{{gs.damageToPlayer}}</p>
                       <p v-if="gs.gamerank == ttas" style="flex:1; font-weight: 700;">{{gs.useWard}}</p>
-                      <p v-show="gs.gamerank == ttas && (gs.premaid==2 || gs.premaid==3) " style="flex:1">사전큐</p>
-                      <p v-show="gs.gamerank == ttas && gs.premaid==1 " style="flex:1"></p>
+                      <p v-show="gs.gamerank == ttas && (gs.premaid==2 || gs.premaid==3) " style="flex:0.5">O</p>
+                      <p v-show="gs.gamerank == ttas && gs.premaid==1 " style="flex:0.5"></p>
 
                       
                       <div v-if="gs.gamerank==ttas" style="flex:2; display: flex; align-items: center; justify-content: center; flex-direction: column;">
@@ -190,10 +214,10 @@
                           </div>
 
                           <div style="display: flex; justify-content: space-evenly;" >
-                            <div style="width:30%; margin-left:0.5rem" :class="`itemcolordiv-${gs.item3_grade}`">
+                            <div style="width:30%; margin-left:1rem" :class="`itemcolordiv-${gs.item3_grade}`">
                               <img style="width:100%" v-if="gs.item3!=0" :src="require(`../assets/Item/${gs.item3}.png`)">
                             </div>
-                            <div style="width:30%; margin-right: 0.5rem;" :class="`itemcolordiv-${gs.item4_grade}`">
+                            <div style="width:30%; margin-right: 1rem;" :class="`itemcolordiv-${gs.item4_grade}`">
                               <img style="width:100%" v-if="gs.item4!=0" :src="require(`../assets/Item/${gs.item4}.png`)">
                             </div>
                           </div>
@@ -239,7 +263,8 @@ export default {
       recentch: [],
       searchuserrank :[],
       userchlist:[],
-      selected:null
+      selected:null,
+      isLoading:false
     }
 
   },
@@ -247,7 +272,7 @@ export default {
     this.searchData()
     this.detailData()
     this.useChData()
-    axios.get("http://127.0.0.1:8000/gamerecord/recentgainrp/" + this.$route.params.nickname + '/')
+    axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/recentgainrp/" + this.$route.params.nickname + '/')
     .then(res => {
       this.recentch = res.data.result
       console.log(this.recentch)
@@ -257,7 +282,7 @@ export default {
   methods:{
     searchbtn() {
       this.$router.push(this.search_key)
-      axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.search_key + '/')
+      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/')
       .then(res => {
           this.gamedetail = res.data.results
           this.show = Array(this.gamedetail.length).fill(false)
@@ -266,7 +291,7 @@ export default {
     },
     nextbtn() {
       this.pages+=1
-      axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+'?page='+this.pages)
+      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+'?page='+this.pages)
       .then(res => {
           this.gamedetail = res.data.results
           this.show = Array(this.gamedetail.length).fill(false)
@@ -280,7 +305,7 @@ export default {
     },
     prevbtn() {
       this.pages-=1
-      axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+'?page='+this.pages)
+      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+'?page='+this.pages)
       .then(res => {
           this.gamedetail = res.data.results
           this.show = Array(this.gamedetail.length).fill(false)
@@ -295,8 +320,17 @@ export default {
     toggle(index) {
       this.show.splice(index,1,!this.show[index])
     },
+    async userclickbtn(value) {
+      this.isLoading = true
+      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + value + '/')
+      .then(res => {
+        this.isLoading = false
+        window.location.href = 'http://localhost:8080/search/' + value
+      }
+      )
+    },
     async refreshbtn() {
-      await axios.get("http://127.0.0.1:8000/gamerecord/testrp/" + `${this.$route.params.nickname}`)
+      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/testrp/" + `${this.$route.params.nickname}`)
       .then(res=>{
         console.log(res)
         this.$router.go()
@@ -304,16 +338,16 @@ export default {
       )
     },
     async searchData() {
-      const sdData = await axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.$route.params.nickname + '/')
+      const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/')
       this.gamedetail = sdData.data.results
       this.show = Array(this.gamedetail.length).fill(false)
     },
     async detailData() {
-      const dData = await axios.get("http://127.0.0.1:8000/gamerecord/getdetail/" + this.$route.params.nickname + '/')
+      const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getdetail/" + this.$route.params.nickname + '/')
       this.userstats = dData.data
     },
     async useChData() {
-      const dData = await axios.get("http://127.0.0.1:8000/gamerecord/userch/" + this.$route.params.nickname + '/')
+      const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/userch/" + this.$route.params.nickname + '/')
       this.userchlist = dData.data.usech
       console.log(this.userchlist)
       this.userchlist.push({chname: '전체', chnumber: 0})
@@ -321,18 +355,17 @@ export default {
     },
     async setSelect(event) {
       if (this.selected) {
-        const sdData = await axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.$route.params.nickname + '/?character='+ this.selected)
+        const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/?character='+ this.selected)
         this.gamedetail = sdData.data.results
         this.show = Array(this.gamedetail.length).fill(false)
       }
       else {
-        const sdData = await axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.$route.params.nickname)
+        const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname)
         this.gamedetail = sdData.data.results
         this.show = Array(this.gamedetail.length).fill(false)
       }
     }
-  }
-
+  },
 }
 </script>
 
@@ -586,6 +619,16 @@ export default {
   height: 100%;
   background-image: url('../assets/Item/grade5.svg');
   background-size: cover;
+}
+
+.loading {
+  top:0;
+  left:0;
+  height: 100%;
+  width:100%;
+  background-color: rgb(108, 106, 106);
+  position: absolute;
+  opacity: 0.7;
 }
 
 </style>

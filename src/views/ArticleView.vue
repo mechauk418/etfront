@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 자유게시판 </h1>
+    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 문의 </h1>
     <div class="bestarticle" style="width:80%; margin: 0 auto; margin-bottom: 30px;">
-      <div style="border: 1px solid black;">
-        asdfasdf
+      <div>
+        <p style="margin:3rem; font-size: larger;"> 건의사항이나 개선해야할 점, 오류 제보 등등 남겨주세요 </p>
       </div>
     </div>
     <div class="container" style="width:90%; margin:0 auto;">

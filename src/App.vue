@@ -1,10 +1,8 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/create">Create</router-link> |
-    <router-link to="/article">Article</router-link> |
-    <router-link to="/search">전적검색</router-link>
+    <router-link to="/article">문의</router-link> |
+    <router-link to="/search"> 전적검색 </router-link>
   </nav>
   <router-view/>
 </template>
@@ -37,7 +35,7 @@ nav {
 } */
 
 nav a {
-  font-weight: bold;
+  
   color: #2c3e50;
 }
 

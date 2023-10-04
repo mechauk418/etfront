@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 자유게시판 </h1>
+    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 문의 </h1>
     <div class="articlebox">
       <div class="articletitle">
         <div style="width:200px;">
@@ -42,10 +42,8 @@ export default {
       selected2: "0",
       selectList: [
         { name: "일반", value: "0" },
-        { name: "정보", value: "1" },
-        { name: "사진", value: "2" },
-        { name: "공략", value: "3" },
-        { name: "자랑", value: "4" },
+        { name: "건의사항", value: "1" },
+        { name: "오류 제보", value: "2" },
       ],
     }
   },
