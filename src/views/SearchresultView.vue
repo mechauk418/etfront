@@ -155,7 +155,7 @@
             <div v-show="show[index]">
               <div style="display: flex; background-color: black; color: white;">
                 <p style="width:5%; align-self: center;">등수</p>
-                <div style="display:flex; width: 95%;">
+                <div style="display:flex; width: 95%; justify-self: center; align-items: center;">
                   <p style="flex:1.5; margin: 0;">캐릭터</p>
                   <p style="flex:2; margin: 0;">닉네임</p>
                   <p style="flex:1; margin: 0;">KDA</p>
