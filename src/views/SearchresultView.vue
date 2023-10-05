@@ -1,6 +1,6 @@
 <template>
   <div class="backgrounddiv">
-    <div v-if="isLoading" class="loading" > 
+    <div v-show="isLoading" class="loading" > 
         <img src="../assets/vic.gif" style="height: 100%;">
     </div>
     <div class="container" v-show="!isLoading">
@@ -176,8 +176,7 @@
                       </div>
                       <div v-if="gs.gamerank == ttas" style="flex:2; font-size: large;">
                         <div style="display: flex;">
-                          <div style="width:15%;">
-                          </div>
+                          
                           <a style="font-weight: 700; text-align: start; margin-left:0.3rem; font-size: 0.8rem;" @click="userclickbtn(gs.user)">{{gs.user}}</a>
                         </div>
                         <div style="display: flex;">
