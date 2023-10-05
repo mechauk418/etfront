@@ -5,7 +5,7 @@
       <input type="text" v-model="search_key" @keyup.enter="searchbtn" class="searchbar" placeholder="닉네임을 입력해주세요" >
       <button @click="searchbtn" style="border: 0; background-color: white;"> 검색 </button>
     </div>
-    <div v-if="isLoading" class="loading" > 
+    <div v-show="isLoading" class="loading" > 
       <img src="../assets/vic.gif" style="height: 100%;">
     </div>
   </div>
