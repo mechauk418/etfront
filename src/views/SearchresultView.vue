@@ -77,14 +77,14 @@
         <!-- 전적 -->
         <div class="전적">
           <div style="display: flex; background-color: black; color: white; align-items: center; justify-content: start;">
-            <p style="width:10%">등수</p>
-            <p style="width:15%">캐릭터</p>
-            <p style="width:10%">KDA</p>
-            <p style="width:10%">딜량</p>
-            <p style="width:10%">RP</p>
-            <p style="width:5%">와드</p>
-            <p style="width:10%">사전큐</p>
-            <p style="width:20%">아이템</p>
+            <p style="width:10%; margin:0;">등수</p>
+            <p style="width:15%; margin:0;">캐릭터</p>
+            <p style="width:10%; margin:0;">KDA</p>
+            <p style="width:10%; margin:0;">딜량</p>
+            <p style="width:10%; margin:0;">RP</p>
+            <p style="width:5%; margin:0;">와드</p>
+            <p style="width:10%; margin:0; letter-spacing: -3px">사전큐</p>
+            <p style="width:20%; margin:0;">아이템</p>
             <div class="chtoggle" style="width:10%;">
               <select v-model="selected" @change="setSelect($event)">
                 <option v-for="ch in userchlist" :key="ch.chnumber" :value="ch.chnumber">{{ch.chname}}</option>
