@@ -1,8 +1,8 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/article">문의</router-link> |
-    <router-link to="/search"> 전적검색 </router-link>
+    <router-link to="/" class="routerfont">전적검색</router-link> |
+    <router-link to="/article" class="routerfont">문의</router-link>
+    <!-- <router-link to="/search"> 전적검색 </router-link> -->
   </nav>
   <router-view/>
 </template>
@@ -42,4 +42,9 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.routerfont {
+  font-size:20px;
+}
+
 </style>

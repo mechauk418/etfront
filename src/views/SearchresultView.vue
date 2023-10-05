@@ -13,7 +13,7 @@
       <div class="maindiv">
         <div class="maindiv1">
           <div class="userstatdiv">
-            <div style="width:33%; display:flex; align-items: center; justify-content: center;">
+            <div style="width:40%; display:flex; align-items: center; justify-content: center;">
               <img class="tierimg" src="../assets/tier/1.png" v-if="userstats.mmr<1000">
               <img class="tierimg" src="../assets/tier/2.png" v-if="1000<=userstats.mmr && userstats.mmr<2000">
               <img class="tierimg" src="../assets/tier/3.png" v-if="2000<=userstats.mmr && userstats.mmr<3000">
@@ -24,39 +24,51 @@
               <img class="tierimg" src="../assets/tier/7.png" v-if="200<userstats.rank && userstats.rank<=700">
               <img class="tierimg" src="../assets/tier/8.png" v-if="userstats.rank<=200">
             </div>
-            <div style="width:33%; display:flex; align-items: center; justify-content: center; flex-direction: column;">
+            <div style="width:60%; display:flex; align-items: center; justify-content: center; flex-direction: column;">
               <p style="font-size:30px; margin:0.5rem;"> {{ userstats.mmr }} RP </p>
+              <p style="margin:0;"> {{ userstats.tier}} {{ userstats.grade }} - {{ userstats.RP }} RP</p>
               <p style="margin:0;"> {{ userstats.rank }}위</p>
             </div>
-            <div style="width:33%; display:flex; align-items: center; justify-content: center; flex-direction: column;">
 
+          </div>
+
+          <div style="display:flex; align-items: center; justify-content: center; flex-wrap: wrap; border:1px solid black">
+            <div style="width:50%; margin-top:10px;">
               <p style="margin:2px;"> 총 게임 수</p>
               <progress value=100 min="0" max="100" class="winrate_progress" style="margin:2px;"></progress>
               <p style="margin:2px;">{{ userstats.totalGames }} </p>
-
+            </div>
+            <div style="width:50%; margin-top:10px;">
               <p style="margin:2px;"> 승률 </p>
               <progress :value='userstats.winrate' min="0" max="100" class="winrate_progress"></progress>
               <p style="margin:2px;">{{ userstats.winrate }}% </p>
-
+            </div>
+            <div style="width:50%; margin-top:10px;">
               <p style="margin:2px;"> 평킬</p>
               <progress value=100 min="0" max="100" class="winrate_progress"></progress>
               <p style="margin:2px;">{{ userstats.averageKills }} </p>
-
+            </div>
+            <div style="width:50%; margin-top:10px;">
               <p style="margin:2px;"> 평딜</p>
               <progress value=100 min="0" max="100" class="winrate_progress"></progress>
               <p style="margin:2px;">{{ userstats.averageDamage }} </p>
             </div>
           </div>
-          
+
           <div>
             <div style="margin-top: 2rem; margin-bottom: 2rem; background-color: rgb(92, 89, 89); color: white; font-size: 20px; padding-top: 0.5rem; padding-bottom: 0.5rem;">
               <p> 2주간 RP 획득 내역 </p>
             </div>
             <div v-for="ch in recentch" :key="ch" style="border: 1px solid black;">
-              <div style="display: flex;">
-                <p style="flex:1;"> {{ ch.chname }} </p>
-                <p style="flex:1;"> {{ ch.trygame }}판</p>
-                <p style="flex:1;"> {{ ch.mmrGain }}점</p>
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <div style="flex:1;">
+                  <div class="ch_icon_div2">
+                    <img class="ch_icon2" :src="require(`../assets/character/${ch.chname}.png`)">
+                    <!-- <p>{{ game.playcharacter }}</p> -->
+                  </div>
+                </div>
+                <p style="flex:1; margin: 0; font-size: larger;"> {{ ch.trygame }}판</p>
+                <p style="flex:1; margin: 0; font-size: larger;"> {{ ch.mmrGain }}점</p>
               </div>
             </div>
           </div>
@@ -274,8 +286,7 @@ export default {
     this.useChData()
     axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/recentgainrp/" + this.$route.params.nickname + '/')
     .then(res => {
-      this.recentch = res.data.result
-      console.log(this.recentch)
+      this.recentch = res.data.result.slice(0,10)
     }
     )
   },
@@ -295,12 +306,9 @@ export default {
       .then(res => {
           this.gamedetail = res.data.results
           this.show = Array(this.gamedetail.length).fill(false)
-          console.log(this.show)
-          console.log(res.data.results)
         }
       )
       .catch(res => {
-        console.log(res)
       })
     },
     prevbtn() {
@@ -309,12 +317,9 @@ export default {
       .then(res => {
           this.gamedetail = res.data.results
           this.show = Array(this.gamedetail.length).fill(false)
-          console.log(this.show)
-          console.log(res.data.results)
         }
       )
       .catch(res => {
-        console.log(res)
       })
     },
     toggle(index) {
@@ -332,7 +337,6 @@ export default {
     async refreshbtn() {
       await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/testrp/" + `${this.$route.params.nickname}`)
       .then(res=>{
-        console.log(res)
         this.$router.go()
       }
       )
@@ -349,9 +353,7 @@ export default {
     async useChData() {
       const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/userch/" + this.$route.params.nickname + '/')
       this.userchlist = dData.data.usech
-      console.log(this.userchlist)
       this.userchlist.push({chname: '전체', chnumber: 0})
-      console.log(this.userchlist)
     },
     async setSelect(event) {
       if (this.selected) {
@@ -493,12 +495,11 @@ export default {
 }
 
 .container {
+  width:1200px;
   margin: 0 auto;
-  margin-left: 400px;
-  margin-right: 400px;
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1200px) {
   .container {
     margin: 0 auto;
     margin-left: 40px;
@@ -569,6 +570,19 @@ export default {
 }
 
 .ch_icon {
+  width:80%;
+  object-fit: cover;
+}
+
+.ch_icon_div2 {
+  width: 50%;
+  height: 50%;
+  border-radius: 80%;
+  overflow: hidden;
+  margin:0 auto;
+}
+
+.ch_icon2 {
   width:80%;
   object-fit: cover;
 }
