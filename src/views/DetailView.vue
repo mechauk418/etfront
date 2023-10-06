@@ -11,7 +11,6 @@
         </div>
         <p> 추천수 : {{ article_like }}</p>
         <div class="div_btn">
-          <button @click="like" class="btn"> 좋아요 </button>
           <button @click="delete_article" class="btn" v-show="article_user == login_user"> 삭제 </button>
           <router-link to="/articles"> <button class="bnt"> 목록 </button></router-link>
         </div>
@@ -28,7 +27,7 @@
             </div>
           </div>
         </div>
-        <form v-show="login_user" @submit.prevent="create_comment" class="myform">
+        <form @submit.prevent="create_comment" class="myform">
           <div class="input-wrap">
             <input type="text" id="comment" v-model="comments_content" class="my-shadow no-kg-font" autocomplete="off" />
             <button type="submit" class="my-shadow no-kg-font" style="cursor:pointer;">작성</button>
@@ -41,7 +40,6 @@
   </template>
   
   <script>
-  import testaxios from '../../src/axios'
   import axios from 'axios'
   // @ is an alias to /src
   import loginStore from '../store/index'
@@ -52,27 +50,22 @@
         article_title:null,
         article_content:null,
         article_user:null,
-        article_like:null,
-        login_user : null,
         article_image : [],
         comments_content:null,
         comments_list : [],
       }
     },
     mounted() {
-      if (loginStore.state.loginStore.isLogin) {
-        this.login_user = loginStore.state.loginStore.userInfo.email
-      }
       axios({
         method: "GET",
-        url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
+        url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
         withCredentials:true
       })
       .then(res =>{
         this.article = res.data
         this.article_title = res.data.title
         this.article_content = res.data.content
-        this.article_user = res.data.createusernickname
+        this.article_user = res.data.createuser
         this.article_like = res.data.like_count
         this.article_image = res.data.images
         this.comments_list = res.data.comments
@@ -80,17 +73,8 @@
   
     },
     methods: {
-      like() {
-        testaxios.post('http://localhost:8000/article/' + this.$route.params.pk + '/like/')
-        .then(
-          testaxios.get('http://localhost:8000/article/' + this.$route.params.pk + '/like/')
-          .then(res =>{
-            this.article_like = res.data.count
-          })
-        )
-      },
       delete_article() {
-        testaxios.delete('http://localhost:8000/article/' + this.$route.params.pk + '/')
+        axios.delete('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/')
         .then(res => {
           this.$router.push('.')
         })
@@ -99,21 +83,17 @@
         const comment_data = {
           'content': this.comments_content
         }
-        testaxios.post('http://localhost:8000/article/' + `${this.$route.params.pk}/comment/`, comment_data)
+        axios.post('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + `${this.$route.params.pk}/comment/`, comment_data)
             .then((response) => {
               axios({ // 댓글 작성해서 리스트를 다시 불러옴
                 method: 'GET',
-                url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
-                headers: {
-                  Authorization: 'Bearer ' + localStorage.getItem('access_token')
-                }
+                url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
               })
               .then(res => {
                 this.article = res.data
                 this.article_title = res.data.title
                 this.article_content = res.data.content
-                this.article_user = res.data.createusernickname
-                this.article_like = res.data.like_count
+                this.article_user = res.data.createuser
                 this.article_image = res.data.images
                 this.comments_list = res.data.comments
               })
@@ -122,21 +102,17 @@
             })
       },
       commentDelete(pk) {
-        testaxios.delete('http://localhost:8000/article/' + `${this.$route.params.pk}/comment/${pk}/`,{headers:{Authorization: 'Bearer ' + localStorage.getItem('access_token')}})
+        axios.delete('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + `${this.$route.params.pk}/comment/${pk}/`)
           .then((response) => {
             axios({ // 댓글 작성해서 리스트를 다시 불러옴
               method: 'GET',
-              url: 'http://localhost:8000/article/' + this.$route.params.pk + '/',
-              headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('access_token')
-              }
+              url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
             })
             .then(response => {
               this.article = res.data
               this.article_title = res.data.title
               this.article_content = res.data.content
-              this.article_user = res.data.createusernickname
-              this.article_like = res.data.like_count
+              this.article_user = res.data.createuser
               this.article_image = res.data.images
               this.comments_list = res.data.comments
             })

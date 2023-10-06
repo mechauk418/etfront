@@ -14,6 +14,18 @@
           <input type="text" id="title" v-model="title" class="input-text" style="width:70%;">
         </div>
       </div>
+
+      <div style="display: flex;">
+        <div style="width:400px; text-align: left;">
+          <label for="createuser">작성자 </label>
+          <input type="text" id="createuser" v-model="title" class="input-text" style="width:70%;">
+        </div>
+        <div style="width:400px; text-align: left;">
+          <label for="password">비밀번호 </label>
+          <input type="password" id="password" v-model="title" class="input-text" style="width:70%;">
+        </div>
+      </div>
+
       <div class="articlecontent">
         <textarea></textarea>
       </div>
@@ -28,15 +40,14 @@
 </template>
     
 <script>
-import testaxios from '../../src/axios'
-import loginStore from '../store/index'
-
+import axios from 'axios'
 export default {
   data () {
     return {
       title: '',
       content: '',
-      islogin:'',
+      createuser:'',
+      password:'',
       images:'',
       images2:'',
       selected2: "0",
@@ -64,15 +75,17 @@ export default {
       // createdata.images = this.images
       createdata.append('title',this.title)
       createdata.append('content',this.content)
+      createdata.append('createuser',this.createuser)
+      createdata.append('password',this.password)
       createdata.append('subject',this.selected2)
       for (const i of this.images) {
         createdata.append('image',i)
         console.log(i)
       }
       console.log(createdata)
-      testaxios({
+      axios({
         method: 'POST',
-        url: 'http://localhost:8000/article/', 
+        url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/', 
         data: createdata,
         withCredentials : true,
         headers:{
@@ -82,7 +95,7 @@ export default {
       })
       .then(response => {
         const article_pk = response.data.pk
-        window.location.href="http://localhost:8080/article/" + article_pk +'/'
+        window.location.href="https://rollthun.site/articles/" + article_pk +'/'
       })
       .catch(error =>{
         console.log(error)
