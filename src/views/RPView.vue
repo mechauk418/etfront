@@ -33,7 +33,6 @@ export default {
     axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/character/rpview")
       .then(res => {
           this.rptable = res.data
-          console.log(res)
         }
       )
   },
