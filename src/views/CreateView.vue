@@ -18,11 +18,11 @@
       <div style="display: flex;">
         <div style="width:400px; text-align: left;">
           <label for="createuser">작성자 </label>
-          <input type="text" id="createuser" v-model="title" class="input-text" style="width:70%;">
+          <input type="text" id="createuser" v-model="createuser" class="input-text" style="width:70%;">
         </div>
         <div style="width:400px; text-align: left;">
           <label for="password">비밀번호 </label>
-          <input type="password" id="password" v-model="title" class="input-text" style="width:70%;">
+          <input type="password" id="password" v-model="password" class="input-text" style="width:70%;">
         </div>
       </div>
 
