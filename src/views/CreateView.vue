@@ -6,7 +6,7 @@
         <div style="width:200px;">
           <label for="subject">말머리 </label>
           <select v-model="selected2">
-            <option v-for="item in selectList" :key="item.value" :value="item.value"> {{ item.name }}</option>
+            <option v-for="item in selectList" :key="item.value" :value="item.name"> {{ item.name }}</option>
           </select>
         </div>
         <div style="width:600px; text-align: left;">
