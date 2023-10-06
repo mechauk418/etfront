@@ -27,7 +27,7 @@
       </div>
 
       <div class="articlecontent">
-        <textarea></textarea>
+        <textarea v-model="content" id="content"></textarea>
       </div>
       <div style="display: flex; margin-left:25px; margin-top:20px;">
         <input multiple @change="OnArticleImage()" ref="ArticleImage" type="file" style="margin-right: auto;" />
