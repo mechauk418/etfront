@@ -18,7 +18,7 @@
         <tr v-for="(article, index) in articles" :key="index" class="list">
           <td><p> {{ article.pk }}  </p> </td>
           <td><router-link :to="'/articles/' + article.pk">{{ article.title }} </router-link></td>
-          <td><p> {{ article.createusernickname }}  </p> </td>
+          <td><p> {{ article.createuser }}  </p> </td>
           <td><p> {{ article.created_at.slice(5,10) }}  </p> </td>
           <td><p> {{ article.hits }}  </p> </td>
         </tr>

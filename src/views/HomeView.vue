@@ -62,6 +62,7 @@ export default {
   width:100%;
   background-color: rgb(108, 106, 106);
   opacity: 0.7;
+  position: absolute;
 }
 
 </style>

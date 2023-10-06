@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 문의 </h1>
+    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 글 수정 </h1>
     <div class="articlebox">
       <div class="articletitle">
         <div style="width:200px;">
@@ -33,7 +33,7 @@
         <input multiple @change="OnArticleImage()" ref="ArticleImage" type="file" style="margin-right: auto;" />
       </div>
       <div style="display: flex; margin-right:20px; margin-top:20px;">
-        <button @click="create" style="margin-left: auto;"> 글 쓰기 </button>
+        <button @click="modify" style="margin-left: auto;"> 글 수정 </button>
       </div>
     </div>
   </div>
@@ -56,19 +56,39 @@ export default {
         { name: "건의사항", value: "1" },
         { name: "오류제보", value: "2" },
       ],
+      article:null,
+      article_title:null,
+      article_content:null,
+      article_user:null,
+      article_image : [],
+      comments_content:null,
+      comments_list : [],
     }
   },
   mounted() {
-    // this.islogin = loginStore.state.loginStore.isLogin
-    // if (this.islogin) {
+    axios({
+      method: "GET",
+      url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
+      withCredentials:true
+    })
+    .then(res =>{
+      this.article = res.data
+      this.title = res.data.title
+      this.content = res.data.content
+      this.createuser = res.data.createuser
+      this.article_image = res.data.images
+      this.comments_list = res.data.comments
+      this.password = res.data.password
+      for (const i of this.selectList) {
+        if (i['name']==res.data.subject){
+          this.selected2=i['value']
+        }
+      }
+    })
 
-    // } else {
-    //   alert('로그인해주세요')
-    //   this.$router.go(-1)
-    // }
   },
   methods:{
-    create () {
+    modify () {
       const createdata = new FormData()
       // createdata.title = this.title
       // createdata.content = this.content
@@ -84,8 +104,8 @@ export default {
       }
       console.log(createdata)
       axios({
-        method: 'POST',
-        url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/', 
+        method: 'PUT',
+        url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/'+ this.$route.params.pk +'/', 
         data: createdata,
         withCredentials : true,
         headers:{

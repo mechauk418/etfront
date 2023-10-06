@@ -1,114 +1,103 @@
 <template>
-    <div>
-      <h1 style="margin-top: 50px; margin-bottom: 50px;"> 자유게시판 </h1>
-      <div class="article_box">
-        <div class="title"><p>{{article_title  }}</p></div>
-        <div class="writer"><p> 작성자 :  {{ article_user }}</p> </div>
-        <div class="content"> <p> 내용 : {{ article_content }}</p></div>
-        <div class="imgbox" v-for="image in article_image" :key="image">
-          <img :src="image.image_original" v-if="image.image == null">
-          <img :src="image.image" v-else>
-        </div>
-        <p> 추천수 : {{ article_like }}</p>
-        <div class="div_btn">
-          <button @click="delete_article" class="btn" v-show="article_user == login_user"> 삭제 </button>
-          <router-link to="/articles"> <button class="bnt"> 목록 </button></router-link>
-        </div>
-        <div v-for="(comment,index) in comments_list" :key="index" style="margin:2rem 0">
-          <div class="comment">
-            <div class="comment_user">
-              <p> {{comment.user  }} </p>
-            </div>
-            <div class="comment_content">
-              <p> {{comment.content  }} </p>
-            </div>
-            <div class="comment_button">
-              <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" v-if="login_user == comment.user" style="background-color: white;">삭제</button>
-            </div>
-          </div>
-        </div>
-        <form @submit.prevent="create_comment" class="myform">
-          <div class="input-wrap">
-            <input type="text" id="comment" v-model="comments_content" class="my-shadow no-kg-font" autocomplete="off" />
-            <button type="submit" class="my-shadow no-kg-font" style="cursor:pointer;">작성</button>
-          </div>
-        </form>
+  <div>
+    <h1 style="margin-top: 50px; margin-bottom: 50px;"> 문의 </h1>
+    <div class="article_box">
+      <div class="title"><p>{{article_title  }}</p></div>
+      <div class="writer"><p> 작성자 :  {{ article_user }}</p> </div>
+      <div class="imgbox" v-for="image in article_image" :key="image" style="text-align: start; margin-left: 1.5rem; margin-bottom: 2rem;">
+        <img :src="image.image_original" v-if="image.image == null">
+        <img :src="image.image" v-else>
       </div>
-  
+      <div class="content"> <p> 내용 : {{ article_content }}</p></div>
+      <div class="div_btn">
+        <button @click="modify_article" class="btn"> 수정 </button>
+        <button @click="delete_article" class="btn"> 삭제 </button>
+        <router-link to="/articles"> <button class="bnt"> 목록 </button></router-link>
+      </div>
+      <div v-for="(comment,index) in comments_list" :key="index" style="margin:2rem 0">
+        <div class="comment">
+          <div class="comment_user">
+            <p> {{comment.user  }} </p>
+          </div>
+          <div class="comment_content">
+            <p> {{comment.content  }} </p>
+          </div>
+          <div class="comment_button">
+            <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" v-if="login_user == comment.user" style="background-color: white;">삭제</button>
+          </div>
+        </div>
+      </div>
+      <form @submit.prevent="create_comment" class="myform">
+        <div class="input-wrap">
+          <div>
+            <input type="text" id="createuser" v-model="createuser" class="my-shadow no-kg-font" autocomplete="off" />  
+            <input type="password" id="password" v-model="password" class="my-shadow no-kg-font" autocomplete="off" />  
+          </div>
+          <input type="text" id="comment" v-model="comments_content" class="my-shadow no-kg-font" autocomplete="off" />
+          <button type="submit" class="my-shadow no-kg-font" style="cursor:pointer;">작성</button>
+        </div>
+      </form>
     </div>
-  
-  </template>
-  
-  <script>
-  import axios from 'axios'
-  // @ is an alias to /src
-  import loginStore from '../store/index'
-  export default {
-    data() {
-      return {
-        article:null,
-        article_title:null,
-        article_content:null,
-        article_user:null,
-        article_image : [],
-        comments_content:null,
-        comments_list : [],
+
+  </div>
+
+</template>
+
+<script>
+import axios from 'axios'
+// @ is an alias to /src
+export default {
+  data() {
+    return {
+      article:null,
+      article_title:null,
+      article_content:null,
+      article_user:null,
+      article_image : [],
+      comments_content:null,
+      comments_list : [],
+      createuser:'',
+      password:'',
+    }
+  },
+  mounted() {
+    axios({
+      method: "GET",
+      url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
+      withCredentials:true
+    })
+    .then(res =>{
+      this.article = res.data
+      this.article_title = res.data.title
+      this.article_content = res.data.content
+      this.article_user = res.data.createuser
+      this.article_like = res.data.like_count
+      this.article_image = res.data.images
+      this.comments_list = res.data.comments
+    })
+
+  },
+  methods: {
+    delete_article() {
+      this.$router.push('../delete/'+ this.$route.params.pk + '/')
+    },
+    modify_article() {
+      this.$router.push('../modify/'+ this.$route.params.pk + '/')
+    },
+    create_comment() {
+      const comment_data = {
+        'content': this.comments_content,
+        'createuser': this.createuser,
+        'password': this.password,
+        'article':this.$route.params.pk
       }
-    },
-    mounted() {
-      axios({
-        method: "GET",
-        url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
-        withCredentials:true
-      })
-      .then(res =>{
-        this.article = res.data
-        this.article_title = res.data.title
-        this.article_content = res.data.content
-        this.article_user = res.data.createuser
-        this.article_like = res.data.like_count
-        this.article_image = res.data.images
-        this.comments_list = res.data.comments
-      })
-  
-    },
-    methods: {
-      delete_article() {
-        axios.delete('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/')
-        .then(res => {
-          this.$router.push('.')
-        })
-      },
-      create_comment() {
-        const comment_data = {
-          'content': this.comments_content
-        }
-        axios.post('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + `${this.$route.params.pk}/comment/`, comment_data)
-            .then((response) => {
-              axios({ // 댓글 작성해서 리스트를 다시 불러옴
-                method: 'GET',
-                url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
-              })
-              .then(res => {
-                this.article = res.data
-                this.article_title = res.data.title
-                this.article_content = res.data.content
-                this.article_user = res.data.createuser
-                this.article_image = res.data.images
-                this.comments_list = res.data.comments
-              })
-              .catch(response => {
-              })
-            })
-      },
-      commentDelete(pk) {
-        axios.delete('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + `${this.$route.params.pk}/comment/${pk}/`)
+      axios.post('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + `${this.$route.params.pk}/comment/`, comment_data)
           .then((response) => {
             axios({ // 댓글 작성해서 리스트를 다시 불러옴
               method: 'GET',
               url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
             })
-            .then(response => {
+            .then(res => {
               this.article = res.data
               this.article_title = res.data.title
               this.article_content = res.data.content
@@ -119,96 +108,115 @@
             .catch(response => {
             })
           })
-      },
-  
     },
-  }
-  </script>
-  
-  <style scoped>
-  
-  .article_box {
-    border: 1px solid black;
-    border-radius: 1cm;
-    padding: 2rem;
-    margin: 200px;
-  }
-  
-  .title {
-    text-align: left;
-    font-size : 1.5rem;
-    margin-left: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .writer {
-    text-align: right;
-    font-size : 1rem;
-    margin-bottom: 3rem;
-  }
-  
-  .content {
-    text-align: left;
-    font-size : 1rem;
-    margin-left: 1.5rem;
-    margin-bottom: 3rem;
-  }
-  
-  
-  .btn{
-    margin:0.2rem
-  }
-  
-  .input-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  
-  .input-wrap>input {
-    width: 90%;
-    height: 33px;
-    border-radius: 3px;
-    border: 0;
-    padding: 0 20px;
-    font-size: 16px;
-    text-align: center;
-  }
-  
-  .input-wrap>button {
-    width: 90px;
-    height: 33px;
-    margin-left: 15px;
-    background-color: rgb(73, 73, 73);
-    color: white;
-    font-size: 16px;
-    border: 0;
-    border-radius: 3px;
-  }
-  
-  .myform {
-    margin-bottom : 0.5rem;
-    margin-top : 0.5rem;
-  
-  }
-  
-  .comment {
-    display : flex;
-  }
-  
-  .comment_user{
-    border-right: solid 1px black;
-    padding: 0.5rem;
-    margin: 0.5rem;
-  }
-  
-  .comment_content{
-    border-right: solid 1px black;
-    padding: 0.5rem;
-    margin: 0.5rem;
-    width : 70%;
-    text-align: left;
-  }
-  
-  </style>
+    commentDelete(pk) {
+      axios.delete('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + `${this.$route.params.pk}/comment/${pk}/`)
+        .then((response) => {
+          axios({ // 댓글 작성해서 리스트를 다시 불러옴
+            method: 'GET',
+            url: 'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/',
+          })
+          .then(response => {
+            this.article = res.data
+            this.article_title = res.data.title
+            this.article_content = res.data.content
+            this.article_user = res.data.createuser
+            this.article_image = res.data.images
+            this.comments_list = res.data.comments
+          })
+          .catch(response => {
+          })
+        })
+    },
+
+  },
+}
+</script>
+
+<style scoped>
+
+.article_box {
+  border: 1px solid black;
+  border-radius: 1cm;
+  padding: 2rem;
+  margin: 200px;
+}
+
+.title {
+  text-align: left;
+  font-size : 1.5rem;
+  margin-left: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.writer {
+  text-align: right;
+  font-size : 1rem;
+  margin-bottom: 3rem;
+}
+
+.content {
+  text-align: left;
+  font-size : 1rem;
+  margin-left: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+
+.btn{
+  margin:0.2rem
+}
+
+.input-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.input-wrap>input {
+  width: 90%;
+  height: 33px;
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 0 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.input-wrap>button {
+  width: 90px;
+  height: 33px;
+  margin-left: 15px;
+  background-color: rgb(73, 73, 73);
+  color: white;
+  font-size: 16px;
+  border: 0;
+  border-radius: 3px;
+}
+
+.myform {
+  margin-bottom : 0.5rem;
+  margin-top : 0.5rem;
+
+}
+
+.comment {
+  display : flex;
+}
+
+.comment_user{
+  border-right: solid 1px black;
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+
+.comment_content{
+  border-right: solid 1px black;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  width : 70%;
+  text-align: left;
+}
+
+</style>
