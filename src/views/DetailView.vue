@@ -8,7 +8,7 @@
         <img :src="image.image_original" v-if="image.image == null">
         <img :src="image.image" v-else>
       </div>
-      <div class="content"> <p> 내용 : {{ article_content }}</p></div>
+      <div class="content"> <p> {{ article_content }}</p></div>
       <div class="div_btn">
         <button @click="modify_article" class="btn"> 수정 </button>
         <button @click="delete_article" class="btn"> 삭제 </button>
@@ -30,11 +30,11 @@
       <form @submit.prevent="create_comment" class="myform">
         <div class="input-wrap">
           <div>
-            <input type="text" id="createuser" v-model="createuser" class="my-shadow no-kg-font" autocomplete="off" />  
-            <input type="password" id="password" v-model="password" class="my-shadow no-kg-font" autocomplete="off" />  
+            <input type="text" id="createuser" v-model="createuser" autocomplete="off" style="margin-bottom: 10px;">  
+            <input type="password" id="password" v-model="password" autocomplete="off">  
           </div>
-          <input type="text" id="comment" v-model="comments_content" class="my-shadow no-kg-font" autocomplete="off" />
-          <button type="submit" class="my-shadow no-kg-font" style="cursor:pointer;">작성</button>
+          <input type="text" id="comment" v-model="comments_content" autocomplete="off">
+          <button type="submit" style="cursor:pointer;">작성</button>
         </div>
       </form>
     </div>
@@ -139,7 +139,8 @@ export default {
   border: 1px solid black;
   border-radius: 1cm;
   padding: 2rem;
-  margin: 200px;
+  margin:0 auto;
+  width:1200px;
 }
 
 .title {
@@ -152,14 +153,14 @@ export default {
 .writer {
   text-align: right;
   font-size : 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 8rem;
 }
 
 .content {
   text-align: left;
   font-size : 1rem;
   margin-left: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 8rem;
 }
 
 
@@ -172,16 +173,16 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  height: 80px;
 }
 
 .input-wrap>input {
   width: 90%;
-  height: 33px;
+  height: 50px;
   border-radius: 3px;
   border: 1px solid black;
   padding: 0 20px;
   font-size: 16px;
-  text-align: center;
 }
 
 .input-wrap>button {
@@ -198,6 +199,7 @@ export default {
 .myform {
   margin-bottom : 0.5rem;
   margin-top : 0.5rem;
+  padding:1rem;
 
 }
 

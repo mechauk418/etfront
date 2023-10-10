@@ -8,7 +8,13 @@
       <button @click="searchbtn"> 검색 </button> -->
       <div class="banner">
         <p style="margin: 2rem; color: white; font-weight: bold; font-size:50px"> {{ userstats.nickname }} </p>
-        <button @click="refreshbtn" style="margin-right: 40px;">  전적갱신 </button>
+        <button @click="refreshbtn" style="margin-right: 40px; width:120px; height: 30px; background-color: white;">  
+          <t v-show="infoloading == false"> 전적갱신 </t> 
+          <div v-show="infoloading == true" style="display: flex; height: 100%; justify-content: center; align-items: center;">
+            <t> 갱신중 &nbsp;</t>
+            <img src="../assets/loading.gif" style="height: 90%; background-color: white;">
+          </div>
+        </button>
       </div>
       <div class="maindiv">
         <div class="maindiv1">
@@ -275,7 +281,8 @@ export default {
       searchuserrank :[],
       userchlist:[],
       selected:null,
-      isLoading:false
+      isLoading:false,
+      infoloading:false
     }
 
   },
@@ -334,6 +341,7 @@ export default {
       )
     },
     async refreshbtn() {
+      this.infoloading = true
       await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/testrp/" + `${this.$route.params.nickname}`)
       .then(res=>{
         this.$router.go()
