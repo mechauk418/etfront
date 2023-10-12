@@ -28,7 +28,7 @@ export default {
       .then(res => {
         console.log(res)
         this.isLoading = false
-        this.$router.push({name:'SearchresultView', params:{pk:this.nickname}})
+        this.$router.push({name:'SearchresultView', params:{nickname:this.search_key}})
       }
       )
     },
