@@ -11,7 +11,7 @@
     <div style="flex:1">
       <div class="searchbar_div2">
         <input type="text" v-model="search_key" @keyup.enter="searchbtn" class="searchbar2" placeholder="닉네임을 입력해주세요" >
-        <button @click="searchbtn" style="border: 0; background-color: white;"> 검색 </button>
+        <button @click="searchbtn" style="border: 0; background-color: white; cursor: pointer;"> 검색 </button>
       </div>
     </div>
     
