@@ -22,7 +22,7 @@ export default {
         if (res.data.result=='True') {
           axios.delete('https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/' + this.$route.params.pk + '/')
           .then(res => {
-            this.$router.push('../../articles')
+            this.$router.push({name:'articles'})
           })
         } else {
           alert('비밀번호가 다릅니다')

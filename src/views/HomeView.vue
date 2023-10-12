@@ -18,8 +18,6 @@ export default {
   data () {
     return {
       search_key:null,
-      gamedetail: [],
-      show : [],
       isLoading:false
     }
   },
@@ -30,7 +28,7 @@ export default {
       .then(res => {
         console.log(res)
         this.isLoading = false
-        this.$router.push('search/'+this.search_key)
+        this.$router.push({name:'search', params:{pk:this.search_key}})
       }
       )
     },

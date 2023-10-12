@@ -95,10 +95,7 @@ export default {
       })
       .then(response => {
         const article_pk = response.data.pk
-        window.location.href="https://rollthun.site/articles/" + article_pk +'/'
-      })
-      .catch(error =>{
-        console.log(error)
+        this.$router.push({name:'articles', params:{pk:article_pk}})
       })
     },
     OnArticleImage() {

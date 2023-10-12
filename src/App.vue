@@ -1,11 +1,11 @@
 <template>
   <nav>
-    <router-link to="/" class="routerfont">전적검색</router-link> |
-    <router-link to="/articles" class="routerfont">문의</router-link>
-    <!-- <router-link to="/search"> 전적검색 </router-link> -->
+    <router-link :to="{name:'home'}" class="routerfont">전적검색</router-link> |
+    <router-link :to="{name:'articles'}" class="routerfont">문의</router-link>
   </nav>
   <router-view/>
 </template>
+
 
 <style>
 #app {

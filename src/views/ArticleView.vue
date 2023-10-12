@@ -17,7 +17,7 @@
         </tr>
         <tr v-for="(article, index) in articles" :key="index" class="list">
           <td><p> {{ article.pk }}  </p> </td>
-          <td><router-link :to="'/articles/' + article.pk">{{ article.title }} </router-link></td>
+          <td><router-link :to="{name:'detail', params:{pk:article.pk}}">{{ article.title }} </router-link></td>
           <td><p> {{ article.createuser }}  </p> </td>
           <td><p> {{ article.created_at.slice(5,10) }}  </p> </td>
           <td><p> {{ article.hits }}  </p> </td>
@@ -26,7 +26,7 @@
       <button @click="prev" v-if="page_prev"> 이전 페이지 </button>
       <button @click="next" v-if="page_next"> 다음 페이지 </button>
       <div>
-          <router-link to="/create"><button> 글 쓰기 </button></router-link>
+        <router-link :to="{name:'create'}"><button> 글 쓰기 </button></router-link>
       </div>
     </div>
   </div>
@@ -57,9 +57,6 @@ export default {
       this.month = today.getMonth();
       this.date = today.getDate();
     })
-    .catch(error =>{
-      console.log(error)
-    })
   },
   methods:{
     next(){
@@ -69,9 +66,6 @@ export default {
         this.page_next= response.data.next
         this.page_prev = response.data.previous
       })
-      .catch(error =>{
-        console.log(error)
-      })
     },
     prev(){
       axios.get(this.page_prev)
@@ -79,9 +73,6 @@ export default {
         this.articles = response.data.results
         this.page_next= response.data.next
         this.page_prev = response.data.previous
-      })
-      .catch(error =>{
-        console.log(error)
       })
     }
   }

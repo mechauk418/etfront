@@ -78,11 +78,12 @@ export default {
 
   },
   methods: {
+
     delete_article() {
-      this.$router.push('../delete/'+ this.$route.params.pk + '/')
+      this.$router.push({ name: 'delete', params: { pk: this.$route.params.pk } })
     },
     modify_article() {
-      this.$router.push('../modify/'+ this.$route.params.pk + '/')
+      this.$router.push({ name: 'modify', params: { pk: this.$route.params.pk } })
     },
     create_comment() {
       const comment_data = {
