@@ -12,8 +12,8 @@
           <img :src="require(`../assets/character/${ch.name}.png`)">
         </div>
         <p style="flex:1; font-size: x-large;"> {{ ch.trygame7days }}판</p>
-        <p style="flex:1; font-size: x-large;"> {{ ch.RPfor7days }}점</p>
-        <p style="flex:1; font-size: x-large;"> {{ ch.RPeff}}점</p>
+        <p style="flex:1; font-size: x-large;"> {{ ch.rpfor7days }}점</p>
+        <p style="flex:1; font-size: x-large;"> {{ ch.rpeff}}점</p>
       </div>
     </div>
   </div>
