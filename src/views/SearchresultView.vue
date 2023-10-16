@@ -101,7 +101,10 @@
           <div v-for="(game,index) in gamedetail" :key="index" style="margin-top: 0.4rem; margin-bottom: 0.4rem; border: 0.5px solid rgb(175, 171, 171);">
             <div :class="`rankdiv${game.gamerank}`" >
               <div style="width:10%; display: flex; justify-content: center; flex-direction: column;">
-                <p style="font-size: x-large; font-weight: 700; margin:0;">#{{ game.gamerank }}</p>
+                <p v-if="game.escapeState ==0" style="font-size: x-large; font-weight: 700; margin:0;">#{{ game.gamerank }}</p>
+                <p v-if="game.escapeState ==1" style="font-size: x-large; font-weight: 700; margin:0;">탈출 실패</p>
+                <p v-if="game.escapeState ==2" style="font-size: x-large; font-weight: 700; margin:0;">탈출 실패</p>
+                <p v-if="game.escapeState ==3" style="font-size: x-large; font-weight: 700; margin:0;">탈출</p>
                 <p style="margin:0; margin-top:0.5rem;">{{ game.whenplay }}</p>
               </div>
               <div style="width:15%; display: flex; align-items: center; justify-content: center;">
@@ -109,6 +112,9 @@
                   <img class="ch_icon" :src="require(`../assets/character/${game.playcharacter}.png`)">
                   <!-- <p>{{ game.playcharacter }}</p> -->
                 </div>
+                <!-- <div>
+                  {{ game.tacticalSkillGroup }} {{ game.bestWeapon }} {{ game.tacticalSkillLevel }}
+                </div> -->
               </div>
               <div style="width:10%; display: flex; align-items: center; justify-content: center; font-size: large;">
                 <p>{{ game.playerkill}} / {{game.playerAss}} / {{game.mosterkill }}</p>
