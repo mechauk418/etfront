@@ -344,7 +344,8 @@ export default {
       this.infoloading = true
       await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/testrp/" + `${this.$route.params.nickname}`)
       .then(res=>{
-        this.$router.go()
+        this.infoloading=false
+        this.$router.go(0)
       }
       )
     },
