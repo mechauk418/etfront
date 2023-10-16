@@ -9,9 +9,9 @@
       <div class="banner">
         <p style="margin: 2rem; color: white; font-weight: bold; font-size:50px"> {{ userstats.nickname }} </p>
         <button @click="refreshbtn" style="margin-right: 40px; width:120px; height: 30px; background-color: white;">  
-          <t v-show="infoloading == false"> 전적갱신 </t> 
+          <p v-show="infoloading == false" style="margin:0"> 전적갱신 </p> 
           <div v-show="infoloading == true" style="display: flex; height: 100%; justify-content: center; align-items: center;">
-            <t> 갱신중 &nbsp;</t>
+            <p style="margin:0"> 갱신중 &nbsp;</p>
             <img src="../assets/loading.gif" style="height: 90%; background-color: white;">
           </div>
         </button>
