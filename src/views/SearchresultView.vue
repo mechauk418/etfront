@@ -346,8 +346,11 @@ export default {
       .then(res=>{
         this.infoloading=false
         this.$router.go(0)
-      }
-      )
+      })
+      .catch(res=>{
+        console.log(res)
+      })
+      
     },
     async searchData() {
       const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/')
