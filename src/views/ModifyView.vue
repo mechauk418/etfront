@@ -1,11 +1,18 @@
 <template>
   <div>
     <h1 style="margin-top: 50px; margin-bottom: 50px;"> 글 수정 </h1>
-    <div class="articlebox">
+    <div class="modify_check" v-if="password_check != true">
+      <h1> 비밀번호를 입력해주세요 </h1>
+      <input type="password" id="check_password" v-model="check_password" class="input-text" style="width:500px;">
+      <button @click="checkbtn" style="margin-left: auto;"> 확인 </button>
+    </div>
+
+    <div class="articlebox" v-else>
       <div class="articletitle">
         <div style="width:200px;">
           <label for="subject">말머리 </label>
           <select v-model="selected2">
+            <option :value="this.selected2" selected> {{ this.subject }} </option>
             <option v-for="item in selectList" :key="item.value" :value="item.name"> {{ item.name }}</option>
           </select>
         </div>
@@ -50,7 +57,8 @@ export default {
       password:'',
       images:'',
       images2:'',
-      selected2: "0",
+      selected2: "",
+      subject:"",
       selectList: [
         { name: "일반", value: "0" },
         { name: "건의사항", value: "1" },
@@ -63,6 +71,8 @@ export default {
       article_image : [],
       comments_content:null,
       comments_list : [],
+      password_check:false,
+      check_password:'',
     }
   },
   mounted() {
@@ -79,6 +89,7 @@ export default {
       this.article_image = res.data.images
       this.comments_list = res.data.comments
       this.password = res.data.password
+      this.subject = res.data.subject
       for (const i of this.selectList) {
         if (i['name']==res.data.subject){
           this.selected2=i['value']
@@ -123,6 +134,21 @@ export default {
     },
     OnArticleImage() {
       this.images = this.$refs.ArticleImage.files
+    },
+    checkbtn() {
+
+      axios.post("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/checkarticle/", {password:this.check_password, article_pk:this.$route.params.pk})
+      .then(res => {
+        if (res.data.result=='True') {
+          this.password_check = true
+        } else {
+          alert('비밀번호가 다릅니다')
+        }
+
+      }
+
+      )
+
     },
   }
 }

@@ -204,7 +204,7 @@
                             <img style="width: 70%; align-self: center; justify-self: center; margin-top:0.3rem;" src="../assets/tier/8.png" v-if="gs.tier=='이터니티'">
                           </div>
 
-                          <p style="color:gray; font-weight: 600; margin:0; align-self: center; margin-left:0.3rem; font-size: 0.8rem;">{{ gs.tier }}{{ gs.grade }}            {{gs.RP  }}RP</p>
+                          <p style="color:gray; font-weight: 600; margin:0; align-self: center; margin-left:0.3rem; font-size: 0.8rem;">{{ gs.tier }}{{ gs.grade }}            {{gs.rp  }}RP</p>
                         </div>
                       </div>
                       <div v-if="gs.gamerank == ttas" style="flex:1;">

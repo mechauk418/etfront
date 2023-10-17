@@ -17,13 +17,18 @@
       <div v-for="(comment,index) in comments_list" :key="index" style="margin:2rem 0">
         <div class="comment">
           <div class="comment_user">
-            <p> {{comment.user  }} </p>
+            <p> {{comment.createuser  }} </p>
           </div>
           <div class="comment_content">
             <p> {{comment.content  }} </p>
           </div>
-          <div class="comment_button">
-            <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" v-if="login_user == comment.user" style="background-color: white;">삭제</button>
+          <div class="comment_button" style="display: flex; align-items: center; width: 10%; margin-left: 20px; justify-content: center; flex-direction: column;">
+            <button type="button" :class="`${comment.pk}`" @click="toggle(index)" style="background-color: rgb(164, 161, 161); border: 0;">삭제</button>
+            <div v-if="show[index]" >
+              <label> 비밀번호 </label>
+              <input style="width: 80%; margin-top: 2px;" v-model="comment_delete_password">
+              <button type="button" :class="`${comment.pk}`" @click="commentDelete(comment.pk)" style="background-color: rgb(164, 161, 161); border: 0;">삭제</button>
+            </div>
           </div>
         </div>
       </div>
@@ -56,8 +61,10 @@ export default {
       article_image : [],
       comments_content:null,
       comments_list : [],
+      show:[],
       createuser:'',
       password:'',
+      comment_delete_password:'',
     }
   },
   mounted() {
@@ -74,11 +81,14 @@ export default {
       this.article_like = res.data.like_count
       this.article_image = res.data.images
       this.comments_list = res.data.comments
+      this.show = Array(this.comments_list.length).fill(false)
     })
 
   },
   methods: {
-
+    toggle(index) {
+      this.show.splice(index,1,!this.show[index])
+    },
     delete_article() {
       this.$router.push({ name: 'delete', params: { pk: this.$route.params.pk } })
     },
@@ -206,16 +216,16 @@ export default {
 
 .comment {
   display : flex;
+  margin-left: 50px;
 }
 
 .comment_user{
-  border-right: solid 1px black;
   padding: 0.5rem;
   margin: 0.5rem;
+  width:15%;
 }
 
 .comment_content{
-  border-right: solid 1px black;
   padding: 0.5rem;
   margin: 0.5rem;
   width : 70%;
