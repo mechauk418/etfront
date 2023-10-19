@@ -102,9 +102,9 @@
             <div :class="`rankdiv${game.gamerank}`" >
               <div style="width:10%; display: flex; justify-content: center; flex-direction: column;">
                 <p v-if="game.escapeState ==0" style="font-size: x-large; font-weight: 700; margin:0;">#{{ game.gamerank }}</p>
-                <p v-if="game.escapeState ==1" style="font-size: x-large; font-weight: 700; margin:0;">탈출 실패</p>
-                <p v-if="game.escapeState ==2" style="font-size: x-large; font-weight: 700; margin:0;">탈출 실패</p>
-                <p v-if="game.escapeState ==3" style="font-size: x-large; font-weight: 700; margin:0;">탈출</p>
+                <p v-if="game.escapeState ==1" style="font-weight: 700; margin:0;">탈출 실패</p>
+                <p v-if="game.escapeState ==2" style="font-weight: 700; margin:0;">탈출 실패</p>
+                <p v-if="game.escapeState ==3" style="font-weight: 700; margin:0;">탈출</p>
                 <p style="margin:0; margin-top:0.5rem;">{{ game.whenplay }}</p>
               </div>
               <div style="width:15%; display: flex; align-items: center; justify-content: center;">
@@ -112,9 +112,32 @@
                   <img class="ch_icon" :src="require(`../assets/character/${game.playcharacter}.png`)">
                   <!-- <p>{{ game.playcharacter }}</p> -->
                 </div>
-                <!-- <div>
-                  {{ game.tacticalSkillGroup }} {{ game.bestWeapon }} {{ game.tacticalSkillLevel }}
-                </div> -->
+                <div style="display: flex; flex-wrap: wrap; width: 50%;">
+
+                  <div style="display: flex; margin-bottom: 5px;">
+                    <div style="margin-right: 5px; flex:1;">
+                      <img style="background-color: black; width:100%;" class="tatic_icon" :src="require(`../assets/WeaponIcon/${game.bestWeapon}.png`)">
+                    </div>
+                    <div style="flex:1;">
+                      <img v-if="game.traitFirstCore != ''" style="background-color: black; width:100%;" class="tatic_icon" :src="require(`../assets/trait/${game.traitFirstCore}.png`)">
+                    </div>
+                  </div>
+
+                  <div style="display: flex;">
+                    <div style="margin-right: 5px; position: relative; flex:1">
+                      <img style="background-color: black; width:100%;" class="tatic_icon" :src="require(`../assets/skill/${game.tacticalSkillGroup}.png`)">
+                      <div style="position: absolute; bottom:0%; right:0%; background-color: black; width: 10px; height: 10px;">
+                        <p style="margin:0; font-size: 10px; color: white;"> {{ game.tacticalSkillLevel }}</p>
+                      </div>
+                    </div>
+                    <div style="flex:1">
+                      <img v-if="parseInt(game.traitSecondSub1/100000)==70 " style="background-color: black; width:100%;" class="tatic_icon" :src="require(`../assets/trait/파괴2.png`)">
+                      <img v-if="parseInt(game.traitSecondSub1/100000)==71 " style="background-color: black; width:100%;" class="tatic_icon" :src="require(`../assets/trait/저항2.png`)">
+                      <img v-if="parseInt(game.traitSecondSub1/100000)==72 " style="background-color: black; width:100%;" class="tatic_icon" :src="require(`../assets/trait/지원2.png`)">
+                    </div>
+                  </div>
+                    <!-- {{ game.tacticalSkillLevel }} -->
+                </div>
               </div>
               <div style="width:10%; display: flex; align-items: center; justify-content: center; font-size: large;">
                 <p>{{ game.playerkill}} / {{game.playerAss}} / {{game.mosterkill }}</p>
@@ -581,7 +604,6 @@ export default {
 
 .ch_icon_div {
   width: 80%;
-  height: 80%;
   border-radius: 70%;
   overflow: hidden;
 }
