@@ -84,7 +84,7 @@
         <div class="전적">
           <div style="display: flex; background-color: black; color: white; align-items: center; justify-content: start;">
             <p style="width:10%">등수</p>
-            <p style="width:15%">캐릭터</p>
+            <p style="width:20%">캐릭터</p>
             <p style="width:10%">KDA</p>
             <p style="width:10%">딜량</p>
             <p style="width:10%">RP</p>
@@ -107,7 +107,7 @@
                 <p v-if="game.escapeState ==3" style="font-weight: 700; margin:0;">탈출</p>
                 <p style="margin:0; margin-top:0.5rem;">{{ game.whenplay }}</p>
               </div>
-              <div style="width:15%; display: flex; align-items: center; justify-content: center;">
+              <div style="width:15%; display: flex; align-items: center; justify-content: center; padding-left: 5px; padding-right: 5px;">
                 <div class="ch_icon_div">
                   <img class="ch_icon" :src="require(`../assets/character/${game.playcharacter}.png`)">
                   <!-- <p>{{ game.playcharacter }}</p> -->
@@ -139,7 +139,7 @@
                     <!-- {{ game.tacticalSkillLevel }} -->
                 </div>
               </div>
-              <div style="width:10%; display: flex; align-items: center; justify-content: center; font-size: large;">
+              <div style="width:10%; display: flex; align-items: center; justify-content: center; font-size: large; padding-left: 5px;">
                 <p>{{ game.playerkill}} / {{game.playerAss}} / {{game.mosterkill }}</p>
               </div>
               <div style="width:10%; display: flex; align-items: center; justify-content: center; font-size: large;">
