@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img src="../assets/logo.jpg" style="height: 300px;">
-    <div style="border:1px solid black; width: 1200px; margin:0 auto">
+    <div style="border:1px solid black; width: 1200px; margin:0 auto" v-if="!testtrue">
       <div style="display: flex; background-color: black; color: white; align-items: center; justify-content: start;">
         <p style="width: 10%;"></p>
         <p style="width: 10%;">닉네임</p>
@@ -124,6 +124,9 @@ export default {
           },
         })
         .then(res=>{
+          if (res.data == 'error'){
+            alert('올바른 사이즈의 이미지를 입력해주세요. (16:9) ')
+          }
           this.search_data = res.data
           this.testtrue=false
           console.log(this.search_data)
