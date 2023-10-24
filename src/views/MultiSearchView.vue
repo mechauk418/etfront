@@ -126,10 +126,11 @@ export default {
         .then(res=>{
           if (res.data == 'error'){
             alert('올바른 사이즈의 이미지를 입력해주세요. (16:9) ')
+            location.href = location.href;
           }
           this.search_data = res.data
           this.testtrue=false
-          console.log(this.search_data)
+          
           }
           // userList 배열의 각 요소별 루프 처리
         )
