@@ -117,7 +117,7 @@ export default {
         document.getElementById("container").src = event.target.result;
         axios({
           method:'POST',
-          url:'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/articles/crop/',
+          url:'https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/crop/',
           withCredentials:true,
           data:{
             imgurl:this.image
