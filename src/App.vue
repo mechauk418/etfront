@@ -6,7 +6,7 @@
     <div style="flex:1">
       <router-link :to="{name:'home'}" class="routerfont">전적검색</router-link> |
       <router-link :to="{name:'articles'}" class="routerfont">문의</router-link> |
-      <router-link :to="{name:'RPView'}" class="routerfont">RP 통계</router-link> |
+      <!-- <router-link :to="{name:'RPView'}" class="routerfont">RP 통계</router-link> | -->
       <router-link :to="{name:'MultiSearchView'}" class="routerfont">멀티서치</router-link>
     </div>
     <div style="flex:1">

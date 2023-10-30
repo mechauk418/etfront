@@ -24,7 +24,7 @@ export default {
   methods:{
     async searchbtn() {
       this.isLoading = true
-      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/')
+      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/20')
       .then(res => {
         console.log(res)
         this.isLoading = false
