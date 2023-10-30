@@ -15,6 +15,12 @@
             <img src="../assets/loading.gif" style="height: 90%; background-color: white;">
           </div>
         </button>
+        <div style="margin-left: auto; margin-right: 2rem;">
+          <select v-model="season_select" style="background-color: rgb(235, 233, 233); width: 10rem; height: 1.5rem; text-align: center;" @change="setSelectSeason($event)">
+            <option value="19"> 정규 시즌1 </option>
+            <option value="20" selected> 정규 프리 시즌2 </option>
+          </select>
+        </div>
       </div>
       <div class="maindiv">
         <div class="maindiv1">
@@ -92,7 +98,7 @@
             <p style="width:10%">사전큐</p>
             <p style="width:20%">아이템</p>
             <div class="chtoggle" style="width:10%;">
-              <select v-model="selected" @change="setSelect($event)">
+              <select v-model="selected_ch" @change="setSelect($event)">
                 <option v-for="ch in userchlist" :key="ch.chnumber" :value="ch.chnumber">{{ch.chname}}</option>
               </select>
             </div>
@@ -309,26 +315,20 @@ export default {
       recentch: [],
       searchuserrank :[],
       userchlist:[],
-      selected:null,
+      selected_ch:null,
       isLoading:false,
-      infoloading:false
+      infoloading:false,
+      season_select:20,
     }
 
   },
   mounted () {
-    this.searchData()
-    this.detailData()
-    this.useChData()
-    axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/recentgainrp/" + this.$route.params.nickname + '/')
-    .then(res => {
-      this.recentch = res.data.result.slice(0,10)
-    }
-    )
+    this.pageData()
   },
   methods:{
     searchbtn() {
       this.$router.push(this.search_key)
-      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/')
+      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/' + this.season_select)
       .then(res => {
           this.gamedetail = res.data.results
           this.show = Array(this.gamedetail.length).fill(false)
@@ -371,7 +371,7 @@ export default {
     },
     async refreshbtn() {
       this.infoloading = true
-      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/testrp/" + `${this.$route.params.nickname}`)
+      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/refresh/" + `${this.$route.params.nickname}`)
       .then(res=>{
         this.infoloading=false
         this.$router.go(0)
@@ -381,32 +381,35 @@ export default {
       })
       
     },
-    async searchData() {
-      const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/')
+    async pageData() {
+      const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
+      const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getdetail/" + this.$route.params.nickname + '/' + this.season_select)
+      const useData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/userch/" + this.$route.params.nickname + '/'+this.season_select)
+      const rcData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/recentgainrp/" + this.$route.params.nickname + '/' + this.season_select)
+
       this.gamedetail = sdData.data.results
       this.show = Array(this.gamedetail.length).fill(false)
-    },
-    async detailData() {
-      const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getdetail/" + this.$route.params.nickname + '/')
       this.userstats = dData.data
-    },
-    async useChData() {
-      const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/userch/" + this.$route.params.nickname + '/')
-      this.userchlist = dData.data.usech
+      this.userchlist = useData.data.usechrank
       this.userchlist.push({chname: '전체', chnumber: 0})
+      this.recentch = rcData.data.result.slice(0,10)
     },
     async setSelect(event) {
-      if (this.selected) {
-        const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/?character='+ this.selected)
+      if (this.selected_ch) {
+        const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select + '?character='+ this.selected_ch)
         this.gamedetail = sdData.data.results
         this.show = Array(this.gamedetail.length).fill(false)
       }
       else {
-        const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname)
+        const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
         this.gamedetail = sdData.data.results
         this.show = Array(this.gamedetail.length).fill(false)
       }
-    }
+    },
+    async setSelectSeason(event) {
+      this.pageData()
+    },
+    
   },
 }
 </script>
