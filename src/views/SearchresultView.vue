@@ -315,7 +315,7 @@ export default {
       recentch: [],
       searchuserrank :[],
       userchlist:[],
-      selected_ch:null,
+      selected_ch:0,
       isLoading:false,
       infoloading:false,
       season_select:20,
