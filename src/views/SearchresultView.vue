@@ -17,6 +17,7 @@
         </button>
         <div style="margin-left: auto; margin-right: 2rem;">
           <select v-model="season_select" style="background-color: rgb(235, 233, 233); width: 10rem; height: 1.5rem; text-align: center;" @change="setSelectSeason($event)">
+            <option value="0"> 일반 </option>
             <option value="19"> 정규 시즌1 </option>
             <option value="20" selected> 정규 프리 시즌2 </option>
           </select>
@@ -336,26 +337,44 @@ export default {
       )
     },
     nextbtn() {
-      this.pages+=1
-      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+'?page='+this.pages)
-      .then(res => {
-          this.gamedetail = res.data.results
-          this.show = Array(this.gamedetail.length).fill(false)
-        }
-      )
-      .catch(res => {
-      })
+      if (this.selected_ch) {
+        this.pages+=1
+        axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select + '?character='+this.selected_ch +'&page='+this.pages)
+        .then(res => {
+            this.gamedetail = res.data.results
+            this.show = Array(this.gamedetail.length).fill(false)
+          }
+        )
+      }
+      else {
+        this.pages+=1
+        axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select +'?page='+this.pages)
+        .then(res => {
+            this.gamedetail = res.data.results
+            this.show = Array(this.gamedetail.length).fill(false)
+          }
+        ) 
+      }
     },
     prevbtn() {
-      this.pages-=1
-      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+'?page='+this.pages)
-      .then(res => {
-          this.gamedetail = res.data.results
-          this.show = Array(this.gamedetail.length).fill(false)
-        }
-      )
-      .catch(res => {
-      })
+      if (this.selected_ch) {
+        this.pages-=1
+        axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select + '?character='+this.selected_ch +'&page='+this.pages)
+        .then(res => {
+            this.gamedetail = res.data.results
+            this.show = Array(this.gamedetail.length).fill(false)
+          }
+        )
+      }
+      else {
+        this.pages-=1
+        axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + `${this.$route.params.nickname}/`+ this.season_select +'?page='+this.pages)
+        .then(res => {
+            this.gamedetail = res.data.results
+            this.show = Array(this.gamedetail.length).fill(false)
+          }
+        ) 
+      }
     },
     toggle(index) {
       this.show.splice(index,1,!this.show[index])
