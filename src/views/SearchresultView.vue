@@ -17,7 +17,6 @@
         </button>
         <div style="margin-left: auto; margin-right: 2rem;">
           <select v-model="season_select" style="background-color: rgb(235, 233, 233); width: 10rem; height: 1.5rem; text-align: center;" @change="setSelectSeason($event)">
-            <option value="0"> 일반 </option>
             <option value="19"> 정규 시즌1 </option>
             <option value="20" selected> 정규 프리 시즌2 </option>
           </select>
@@ -189,11 +188,11 @@
                   </div>
                 </div>
               </div>
-              <button v-if="game.gamerank==1" @click="toggle(index)" class="addbtn1"> ▼ </button>
-              <button v-if="game.gamerank==2 || game.gamerank==3" @click="toggle(index)" class="addbtn2"> ▼ </button>
-              <button v-if="game.gamerank>3" @click="toggle(index)" class="addbtn3"> ▼ </button>
+              <button v-if="game.gamerank==1" @click="toggle(index, game.gamenumber)" class="addbtn1"> ▼ </button>
+              <button v-if="game.gamerank==2 || game.gamerank==3" @click="toggle(index,game.gamenumber)" class="addbtn2"> ▼ </button>
+              <button v-if="game.gamerank>3" @click="toggle(index,game.gamenumber)" class="addbtn3"> ▼ </button>
             </div>
-            
+                        
             <div v-show="show[index]">
               <div style="display: flex; background-color: black; color: white;">
                 <p style="width:5%; align-self: center;">등수</p>
@@ -207,16 +206,16 @@
                   <p style="flex:2; margin: 0;">아이템</p>
                 </div>
               </div>
-
-              <div v-for="ttas in (game.gamedetail.length/3)" :key="ttas" :class="game.gamerank==ttas ? 'userteam' : 'nonuserteam' ">
+              
+              <div v-for="rank in (detail_number[index])" :key="rank" :class="detail.gamerank==rank ? 'userteam' : 'nonuserteam' ">
                 <div style="display: flex;">
-                  <p style="align-self: center; width: 5%;">{{ ttas }}</p>
+                  <p style="align-self: center; width: 5%;">{{ rank }}</p>
                   <div style="width:95%">
-                    <div v-for="gs in game.gamedetail" :key="gs" style="display: flex; align-items: center;">
+                    <div v-for="gs in detail[index]" :key="gs" style="display: flex; align-items: center;">
                       <div class="detail_icon2_div">
-                        <img class="detail_icon2" v-if="gs.gamerank == ttas" :src="require(`../assets/character/${gs.playcharacter}.png`)">
+                        <img class="detail_icon2" v-if="gs.gamerank == rank" :src="require(`../assets/character/${gs.playcharacter}.png`)">
                       </div>
-                      <div v-if="gs.gamerank == ttas" style="flex:2; font-size: large;">
+                      <div v-if="gs.gamerank == rank" style="flex:2; font-size: large;">
                         <div style="display: flex;">
                           
                           <a style="font-weight: 700; text-align: start; margin-left:0.3rem; font-size: 1rem;" @click="userclickbtn(gs.user)">{{gs.user}}</a>
@@ -237,22 +236,22 @@
                           <p style="color:gray; font-weight: 600; margin:0; align-self: center; margin-left:0.3rem; font-size: 0.8rem;">{{ gs.tier }}{{ gs.grade }}            {{gs.rp  }}RP</p>
                         </div>
                       </div>
-                      <div v-if="gs.gamerank == ttas" style="flex:1;">
+                      <div v-if="gs.gamerank == rank" style="flex:1;">
                         <span style="font-weight: 700;"> {{ gs.playerkill }}</span>
                         <span style="color:gray"> / </span>
                         <span style="font-weight: 700;">{{ gs.playerAss }} </span>
                         <span style="color:gray"> / </span>
                         <span style="font-weight: 700;">{{ gs.mosterkill }} </span>
                       </div>
-                      <!-- <span v-if="gs.gamerank == ttas" style="flex:1; font-size: large;">{{gs.playerkill}}/{{ gs.playerAss }}/{{ gs.mosterkill }}</span> -->
-                      <!-- <p v-if="gs.gamerank == ttas" style="flex:1; font-size: large;">{{gs.playerkill}}/{{ gs.playerAss }}/{{ gs.mosterkill }}</p> -->
-                      <p v-if="gs.gamerank == ttas" style="flex:1; font-weight: 700;">{{gs.damageToPlayer}}</p>
-                      <p v-if="gs.gamerank == ttas" style="flex:1; font-weight: 700;">{{gs.useWard}}</p>
-                      <p v-show="gs.gamerank == ttas && (gs.premaid==2 || gs.premaid==3) " style="flex:0.5">O</p>
-                      <p v-show="gs.gamerank == ttas && gs.premaid==1 " style="flex:0.5"></p>
+                      <!-- <span v-if="gs.gamerank == rank" style="flex:1; font-size: large;">{{gs.playerkill}}/{{ gs.playerAss }}/{{ gs.mosterkill }}</span> -->
+                      <!-- <p v-if="gs.gamerank == rank" style="flex:1; font-size: large;">{{gs.playerkill}}/{{ gs.playerAss }}/{{ gs.mosterkill }}</p> -->
+                      <p v-if="gs.gamerank == rank" style="flex:1; font-weight: 700;">{{gs.damageToPlayer}}</p>
+                      <p v-if="gs.gamerank == rank" style="flex:1; font-weight: 700;">{{gs.useWard}}</p>
+                      <p v-show="gs.gamerank == rank && (gs.premaid==2 || gs.premaid==3) " style="flex:0.5">O</p>
+                      <p v-show="gs.gamerank == rank && gs.premaid==1 " style="flex:0.5"></p>
 
                       
-                      <div v-if="gs.gamerank==ttas" style="flex:2; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                      <div v-if="gs.gamerank==rank" style="flex:2; display: flex; align-items: center; justify-content: center; flex-direction: column;">
                         <div style="width:90%">
                           <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;" >
                             <div style="width:30%;" :class="`itemcolordiv-${gs.item0_grade}`">
@@ -320,6 +319,8 @@ export default {
       isLoading:false,
       infoloading:false,
       season_select:20,
+      detail:[],
+      detail_number: []
     }
 
   },
@@ -376,8 +377,18 @@ export default {
         ) 
       }
     },
-    toggle(index) {
-      this.show.splice(index,1,!this.show[index])
+    toggle(index,gamenumber) {
+      axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/recorddetail/" + gamenumber)
+        .then(res => {
+            const data = res.data
+            this.detail.splice(index, 0, data)
+            this.detail_number.splice(index, 0, data.length/3)
+            console.log(this.detail_number)
+            this.show.splice(index,1,!this.show[index])
+          }
+        )
+
+
     },
     async userclickbtn(value) {
       this.isLoading = true
