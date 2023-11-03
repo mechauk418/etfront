@@ -37,9 +37,11 @@
               <img class="tierimg" src="../assets/tier/8.png" v-if="userstats.rank<=200">
             </div>
             <div style="width:60%; display:flex; align-items: center; justify-content: center; flex-direction: column;">
-              <p style="font-size:30px; margin:0.5rem;"> {{ userstats.mmr }} RP </p>
-              <p style="margin:0;"> {{ userstats.tier}} {{ userstats.grade }} - {{ userstats.RP }} RP</p>
-              <p style="margin:0;"> {{ userstats.rank }}위</p>
+              <p v-if="userstats.mmr!='-'" style="font-size:30px; margin:0.5rem;"> {{ userstats.mmr }} RP </p>
+              <p v-else style="font-size:30px; margin:0.5rem;"> 언랭크 </p>
+              <p v-if="userstats.mmr!='-'" style="margin:0;"> {{ userstats.tier}} {{ userstats.grade }} - {{ userstats.RP }} RP</p>
+              <p v-else style="margin:0;"> 기록 없음</p>
+              <p v-if="userstats.mmr!='-'" style="margin:0;"> {{ userstats.rank }}위</p>
             </div>
 
           </div>
@@ -53,7 +55,8 @@
             <div style="width:50%; margin-top:10px;">
               <p style="margin:2px;"> 승률 </p>
               <progress :value='userstats.winrate' min="0" max="100" class="winrate_progress"></progress>
-              <p style="margin:2px;">{{ userstats.winrate }}% </p>
+              <p v-if="userstats.mmr!='-'" style="margin:2px;">{{ userstats.winrate }}% </p>
+              <p v-else style="margin:2px;"> - </p>
             </div>
             <div style="width:50%; margin-top:10px;">
               <p style="margin:2px;"> 평킬</p>
@@ -102,6 +105,9 @@
                 <option v-for="ch in userchlist" :key="ch.chnumber" :value="ch.chnumber">{{ch.chname}}</option>
               </select>
             </div>
+          </div>
+          <div v-if="userstats.mmr=='-'">
+            <p> 이번 시즌 플레이 데이터가 없습니다.</p>
           </div>
 
           <div v-for="(game,index) in gamedetail" :key="index" style="margin-top: 0.4rem; margin-bottom: 0.4rem; border: 0.5px solid rgb(175, 171, 171);">
@@ -383,7 +389,6 @@ export default {
             const data = res.data
             this.detail.splice(index, 0, data)
             this.detail_number.splice(index, 0, data.length/3)
-            console.log(this.detail_number)
             this.show.splice(index,1,!this.show[index])
           }
         )
@@ -407,16 +412,19 @@ export default {
         this.$router.go(0)
       })
       .catch(res=>{
-        console.log(res)
       })
       
     },
     async pageData() {
+      
       const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
-      const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getdetail/" + this.$route.params.nickname + '/' + this.season_select)
-      const useData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/userch/" + this.$route.params.nickname + '/'+this.season_select)
-      const rcData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/recentgainrp/" + this.$route.params.nickname + '/' + this.season_select)
-
+      const dData = await axios.get("http://127.0.0.1:8000/gamerecord/getdetail/" + this.$route.params.nickname + '/' + this.season_select)
+      if ('message' in dData.data){
+        this.userstats = dData.data
+      }
+      const useData = await axios.get("http://127.0.0.1:8000/gamerecord/userch/" + this.$route.params.nickname + '/'+this.season_select)
+      const rcData = await axios.get("http://127.0.0.1:8000/gamerecord/recentgainrp/" + this.$route.params.nickname + '/' + this.season_select)
+      
       this.gamedetail = sdData.data.results
       this.show = Array(this.gamedetail.length).fill(false)
       this.userstats = dData.data

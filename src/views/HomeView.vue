@@ -5,6 +5,7 @@
       <input type="text" v-model="search_key" @keyup.enter="searchbtn" class="searchbar" placeholder="닉네임을 입력해주세요" >
       <button @click="searchbtn" style="border: 0; background-color: white;"> 검색 </button>
     </div>
+    <h1 v-if="usercheck"> {{ usercheck }}</h1>
     <div v-show="isLoading" class="loading" > 
       <img src="../assets/vic.gif" style="height: 100%;">
     </div>
@@ -18,7 +19,8 @@ export default {
   data () {
     return {
       search_key:null,
-      isLoading:false
+      isLoading:false,
+      usercheck:null,
     }
   },
   methods:{
@@ -26,11 +28,16 @@ export default {
       this.isLoading = true
       // 20 test
       this.search_key = this.search_key.trim()
-      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/20') 
+      await axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.search_key + '/20') 
       .then(res => {
-        console.log(res)
         this.isLoading = false
-        this.$router.push({name:'SearchresultView', params:{nickname:this.search_key}})
+        if ('message' in res.data) {
+          this.usercheck = '플레이어를 찾을 수 없습니다.'
+          this.search_key = null
+        } else {
+          this.$router.push({name:'SearchresultView', params:{nickname:this.search_key}})
+        }
+        
       }
       )
     },
