@@ -400,7 +400,7 @@ export default {
       await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + value + '/')
       .then(res => {
         this.isLoading = false
-        window.location.href = 'http://localhost:8080/search/' + value
+        window.location.href = 'https://www.rollthun.site/search/' + value
       }
       )
     },
@@ -418,12 +418,12 @@ export default {
     async pageData() {
       
       const sdData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.$route.params.nickname + '/' + this.season_select)
-      const dData = await axios.get("http://127.0.0.1:8000/gamerecord/getdetail/" + this.$route.params.nickname + '/' + this.season_select)
+      const dData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getdetail/" + this.$route.params.nickname + '/' + this.season_select)
       if ('message' in dData.data){
         this.userstats = dData.data
       }
-      const useData = await axios.get("http://127.0.0.1:8000/gamerecord/userch/" + this.$route.params.nickname + '/'+this.season_select)
-      const rcData = await axios.get("http://127.0.0.1:8000/gamerecord/recentgainrp/" + this.$route.params.nickname + '/' + this.season_select)
+      const useData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/userch/" + this.$route.params.nickname + '/'+this.season_select)
+      const rcData = await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/recentgainrp/" + this.$route.params.nickname + '/' + this.season_select)
       
       this.gamedetail = sdData.data.results
       this.show = Array(this.gamedetail.length).fill(false)
