@@ -28,9 +28,10 @@ export default {
       this.isLoading = true
       // 20 test
       this.search_key = this.search_key.trim()
-      await axios.get("http://127.0.0.1:8000/gamerecord/getsearch/" + this.search_key + '/20') 
+      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/20') 
       .then(res => {
         this.isLoading = false
+        
         if ('message' in res.data) {
           this.usercheck = '플레이어를 찾을 수 없습니다.'
           this.search_key = null
