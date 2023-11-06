@@ -27,17 +27,25 @@ export default {
   data () {
     return {
       search_key:null,
-      isLoading:false
+      isLoading:false,
+      usercheck:null
     }
   },
   methods:{
     async searchbtn() {
+      console.log(this.search_key)
       this.isLoading = true
-      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/')
+      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/20')
       .then(res => {
-        console.log(res)
         this.isLoading = false
-        window.location.href = 'https://www.rollthun.site/search/' + this.search_key + '/'
+        
+        if ('message' in res.data) {
+          alert('플레이어를 찾을 수 없습니다.')
+          this.search_key = null
+        } else {
+          window.location='https://www.rollthun.site/search/'+this.search_key
+        }
+        
       }
       )
     },
