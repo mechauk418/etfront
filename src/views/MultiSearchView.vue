@@ -16,7 +16,8 @@
       <div v-for="(user,index) in search_data" :key="index" style="display: flex; align-items: center; border: 1px solid black; width: 1200px;">
         <div style="width: 10%;">
           <div style="overflow: hidden; width: 120px; height: 50px; border-radius: 80%; margin: 0 auto; ">
-            <img :src="require(`../assets/character/${user.most1}.png`)" style="object-fit: cover; width: 60%; height: 100%;">
+            <img v-if="user.most1" :src="require(`../assets/character/${user.most1}.png`)" style="object-fit: cover; width: 60%; height: 100%;">
+            <img v-else :src="require(`../assets/character/missing.svg`)" style="object-fit: cover; width: 60%; height: 100%;">
           </div>
         </div>
 
@@ -25,15 +26,18 @@
         </div>
 
         <div style="width: 10%;">
-          <p>{{ user.tier }} {{ user.grade }}</p>
+          <p v-if="user.tier != '-'">{{ user.tier }} {{ user.grade }}</p>
+          <p v-else>-</p>
         </div>
 
         <div style="width: 10%;">
-          <p>{{ user.rp }} RP</p>
+          <p v-if="user.rp != '-'">{{ user.rp }} RP</p>
+          <p v-else>-</p>
         </div>
 
         <div style="width: 10%;">
-          <p>{{ user.winrate }}%</p>
+          <p v-if="user.winrate != '-'">{{ user.winrate }}%</p>
+          <p v-else>-</p>
         </div>
 
         <div style="width: 10%;">
@@ -46,33 +50,33 @@
 
         <div style="width: 30%; display: flex;">
           <div style="width: 20%; height: 50px;">
-            <div style="overflow: hidden; width: 72px; height: 50px; border-radius: 80%; margin: 0 auto; ">
+            <div v-if="user.most1" style="overflow: hidden; width: 72px; height: 50px; border-radius: 80%; margin: 0 auto; ">
               <img :src="require(`../assets/character/${user.most1}.png`)" style="object-fit: cover; width: 60%; height: 100%;">
             </div>
           </div>
 
           <div style="width: 13%;">
-            <p>{{ user.most1_play }}%</p>
+            <p v-if="user.most1">{{ user.most1_play }}%</p>
           </div>
 
           <div style="width: 20%; height: 50px;">
-            <div style="overflow: hidden; width: 72px; height: 50px; border-radius: 80%; margin: 0 auto; ">
+            <div v-if="user.most2" style="overflow: hidden; width: 72px; height: 50px; border-radius: 80%; margin: 0 auto; ">
               <img :src="require(`../assets/character/${user.most2}.png`)" style="object-fit: cover; width: 60%; height: 100%;">
             </div>
           </div>
 
           <div style="width: 13%;">
-            <p>{{ user.most2_play }}%</p>
+            <p v-if="user.most2">{{ user.most2_play }}%</p>
           </div>
 
           <div style="width: 20%; height: 50px;">
-            <div style="overflow: hidden; width: 72px; height: 50px; border-radius: 80%; margin: 0 auto; ">
+            <div v-if="user.most3" style="overflow: hidden; width: 72px; height: 50px; border-radius: 80%; margin: 0 auto; ">
               <img :src="require(`../assets/character/${user.most3}.png`)" style="object-fit: cover; width: 60%; height: 100%;">
             </div>
           </div>
 
           <div style="width: 13%;">
-            <p>{{ user.most3_play }}%</p>
+            <p v-if="user.most3">{{ user.most3_play }}%</p>
           </div>
 
         </div>
