@@ -19,6 +19,7 @@
           <select v-model="season_select" style="background-color: rgb(235, 233, 233); width: 10rem; height: 1.5rem; text-align: center;" @change="setSelectSeason($event)">
             <option value="19"> 정규 시즌1 </option>
             <option value="20" selected> 정규 프리 시즌2 </option>
+            <option value="21"> 정규 시즌2 </option>
           </select>
         </div>
       </div>
@@ -324,7 +325,7 @@ export default {
       selected_ch:0,
       isLoading:false,
       infoloading:false,
-      season_select:20,
+      season_select:21,
       detail:[],
       detail_number: []
     }

@@ -28,7 +28,7 @@ export default {
       this.isLoading = true
       // 20 test
       this.search_key = this.search_key.trim()
-      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/20') 
+      await axios.get("https://port-0-eranca-gg-jvpb2alnb33u83.sel5.cloudtype.app/gamerecord/getsearch/" + this.search_key + '/21') 
       .then(res => {
         this.isLoading = false
         
