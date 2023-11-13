@@ -34,8 +34,8 @@
               <img class="tierimg" src="../assets/tier/5.png" v-if="4000<=userstats.mmr && userstats.mmr<5000">
               <img class="tierimg" src="../assets/tier/6.png" v-if="5000<=userstats.mmr && userstats.mmr<6000 ">
               <img class="tierimg" src="../assets/tier/66.png" v-if="6000<=userstats.mmr && userstats.rank > 700">
-              <img class="tierimg" src="../assets/tier/7.png" v-if="200<userstats.rank && userstats.rank<=700">
-              <img class="tierimg" src="../assets/tier/8.png" v-if="userstats.rank<=200">
+              <img class="tierimg" src="../assets/tier/7.png" v-if="6000<=userstats.mmr && 200<userstats.rank && userstats.rank<=700">
+              <img class="tierimg" src="../assets/tier/8.png" v-if="6000<=userstats.mmr && userstats.rank<=200">
             </div>
             <div style="width:60%; display:flex; align-items: center; justify-content: center; flex-direction: column;">
               <p v-if="userstats.mmr!='-'" style="font-size:30px; margin:0.5rem;"> {{ userstats.mmr }} RP </p>
