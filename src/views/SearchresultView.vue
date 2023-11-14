@@ -70,6 +70,40 @@
               <p style="margin:2px;">{{ userstats.averageDamage }} </p>
             </div>
           </div>
+          <div style="margin-top: 2rem; margin-bottom: 2rem; ">
+            <div style="background-color: rgb(92, 89, 89); color: white; font-size: 20px; padding-top: 0.1rem; padding-bottom: 0.1rem; ">
+              <p style="margin: 0;"> 실험체 통계 </p>
+            </div>
+            <div style="background-color: rgb(92, 89, 89); color: white; font-size: 15px; padding-top: 0.1rem; padding-bottom: 0.1rem; display: flex; justify-content: space-evenly; align-items: center; ">
+              <div style="width: 34%;">
+                실험체
+              </div>
+              <div style="width: 22%;">
+                승률
+              </div>
+              <div style="width: 22%;">
+                평킬
+              </div>
+              <div style="width: 22%;">
+                평딜
+              </div>
+            </div>
+            <div v-for="ch in userchlist" :key="ch" style="border: 1px solid black;">
+              <div v-if="ch.character==0"></div>
+              <div v-else style="display: flex; justify-content: center; align-items: center;">
+                <div style="width:20%;">
+                  <div class="ch_icon_div3">
+                    <img class="ch_icon3" :src="require(`../assets/character/${ch.chname}.png`)">
+                    <!-- <p>{{ game.playcharacter }}</p> -->
+                  </div>
+                </div>
+                <p style="width:14%; margin: 0;"> {{ ch.allgames }}게임</p>
+                <p style="width:22%; margin: 0;"> {{ ch.winrate.toFixed(2) }}%</p>
+                <p style="width:22%; margin: 0;"> {{ ch.avgKill.toFixed(2) }}</p>
+                <p style="width:22%; margin: 0;"> {{ ch.avgDamage.toFixed(0) }}</p>
+              </div>
+            </div>
+          </div>
 
           <div>
             <div style="margin-top: 2rem; margin-bottom: 2rem; background-color: rgb(92, 89, 89); color: white; font-size: 20px; padding-top: 0.5rem; padding-bottom: 0.5rem;">
@@ -83,7 +117,7 @@
                     <!-- <p>{{ game.playcharacter }}</p> -->
                   </div>
                 </div>
-                <p style="flex:1; margin: 0; font-size: larger;"> {{ ch.trygame }}판</p>
+                <p style="flex:1; margin: 0; font-size: larger;"> {{ ch.trygame }}게임</p>
                 <p style="flex:1; margin: 0; font-size: larger;"> {{ ch.mmrGain }}점</p>
               </div>
             </div>
@@ -103,7 +137,7 @@
             <p style="width:20%">아이템</p>
             <div class="chtoggle" style="width:10%;">
               <select v-model="selected_ch" @change="setSelect($event)">
-                <option v-for="ch in userchlist" :key="ch.chnumber" :value="ch.chnumber">{{ch.chname}}</option>
+                <option v-for="ch in userchlist" :key="ch.character" :value="ch.character">{{ch.koreanname}}</option>
               </select>
             </div>
           </div>
@@ -430,7 +464,7 @@ export default {
       this.show = Array(this.gamedetail.length).fill(false)
       this.userstats = dData.data
       this.userchlist = useData.data.usechrank
-      this.userchlist.push({chname: '전체', chnumber: 0})
+      this.userchlist.push({chname: '전체', character: 0})
       this.recentch = rcData.data.result.slice(0,10)
     },
     async setSelect(event) {
@@ -663,7 +697,20 @@ export default {
   margin:0 auto;
 }
 
+.ch_icon_div3 {
+  width: 80%;
+  height: 50%;
+  border-radius: 80%;
+  overflow: hidden;
+  margin:0 auto;
+}
+
 .ch_icon2 {
+  width:80%;
+  object-fit: cover;
+}
+
+.ch_icon3 {
   width:80%;
   object-fit: cover;
 }
